@@ -1,4 +1,4 @@
-import {UPDATE_POKEMON, SET_POKEMON_ERROR, RESTORE_SAVED_POKEMON, SET_START_LOAD} from './pokemon.actions';
+import { UPDATE_POKEMON, SET_POKEMON_ERROR, RESTORE_SAVED_POKEMON, SET_START_LOAD } from './pokemon.actions';
 
 const initialState = {
     error: {
@@ -20,8 +20,12 @@ export const pokemonReducer = (state = initialState, action) => {
         case UPDATE_POKEMON:
             return {
                 ...state,
-                error: initialState.error,
-                lastUpdate:  new Date(),
+                error: {
+                    ...state.error,
+                    status: false,
+                    reason: ''
+                },
+                lastUpdate:  action.newValue.lastUpdate,
                 onLoading: false,
                 pokemons: [
                     ...state.pokemons,
@@ -42,7 +46,11 @@ export const pokemonReducer = (state = initialState, action) => {
         case RESTORE_SAVED_POKEMON:
             return {
                 ...state,
-                error: initialState.error,
+                error: {
+                    ...state.error,
+                    status: false,
+                    reason: ''
+                },
                 onLoading: false,
                 pokemonSelected: {
                     ...state.pokemonSelected,
@@ -56,6 +64,7 @@ export const pokemonReducer = (state = initialState, action) => {
             return {
                 ...state,
                 error: {
+                    ...state.error,
                     status: true,
                     reason: action.newValue
                 },
